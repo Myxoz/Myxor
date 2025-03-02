@@ -205,7 +205,7 @@ class MainActivity : ComponentActivity() {
                 }
                 AnimatedVisibility(selectedPersonVisible,
                     enter = fadeIn() + scaleIn(spring(stiffness = 5000f), initialScale = .5f),
-                    exit = fadeOut() + scaleOut(spring(stiffness = 1000f), targetScale = .5f)
+                    exit = fadeOut() + scaleOut(spring(stiffness = 300f), targetScale = .75f)
                 ) {
                     var person by remember(selectedPerson) {  mutableStateOf(selectedPerson) }
                     val elements = remember(selectedPerson) {person.elements.toMutableStateList()}
