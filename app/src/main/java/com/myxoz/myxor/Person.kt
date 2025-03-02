@@ -25,7 +25,6 @@ class Person(
                 fromJSON(obj)
             }
 
-        fun json(people: List<Person>): JSONArray = people.map { it.asJSON() }.asJSONArray()
         override fun fromJSON(obj: JSONObject): Person = Person(obj.getString(NAME), obj.getJSONArray(ELEMENTS).listOfJSONObject().map { Element.fromJSON(it) })
     }
 

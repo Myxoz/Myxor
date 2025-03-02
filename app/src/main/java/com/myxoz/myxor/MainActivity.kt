@@ -93,7 +93,7 @@ import kotlin.math.abs
 private fun Int.getColor(negTotal: Int, posTotal: Int): Color = Color(1-(this.toFloat()/posTotal), 1-(this.toFloat()/negTotal), 0f, 1f)
 
 class MainActivity : ComponentActivity() {
-    private lateinit var prefs: SharedPreferences;
+    private lateinit var prefs: SharedPreferences
     private var backPressed: (()->Unit)?=null
     private val onBackPressedCallback = object: OnBackPressedCallback(true){
         override fun handleOnBackPressed() {
@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = getSharedPreferences(localClassName, MODE_PRIVATE);
+        prefs = getSharedPreferences(localClassName, MODE_PRIVATE)
         enableEdgeToEdge()
         setContent {
             val people = remember {
@@ -377,7 +377,7 @@ class MainActivity : ComponentActivity() {
                 if(personSubjectedForDeletion!=null){
                     AlertDialog(
                         {personSubjectedForDeletion=null},
-                        { TextButton({people.removeIf { it.uuid==selectedPerson?.uuid}; selectedPersonVisible=false; personSubjectedForDeletion=null; save()}) { Text("Delete") }},
+                        { TextButton({people.removeIf { it.uuid==selectedPerson.uuid}; selectedPersonVisible=false; personSubjectedForDeletion=null; save()}) { Text("Delete") }},
                         title = { Text("Delete ${people.find { it.uuid==personSubjectedForDeletion }?.name?:"Entry"}")},
                         text = { Text("Clicking delete will delete this entry forever, this can't be undone")},
                         dismissButton = { TextButton({personSubjectedForDeletion=null}) { Text("Cancel") } },
@@ -519,30 +519,6 @@ fun Long.dateToString(): String{
     val calendar= Calendar.getInstance()
     calendar.timeInMillis=this
     return "${arrayOf("So","Mo","Di","Mi","Do","Fr","Sa")[calendar.get(Calendar.DAY_OF_WEEK)-1]} ${calendar.get(Calendar.DAY_OF_MONTH)}.${calendar.get(Calendar.MONTH)+1}.${calendar.get(Calendar.YEAR)}"
-}
-fun stringToDate(date: String): Long {
-    if (date.isBlank() || date.lowercase() == "heute") return System.currentTimeMillis()
-    if (date.lowercase() == "gestern") return System.currentTimeMillis() - 24 * 60 * 60 * 1000L
-    if (date.lowercase() == "vorgestern") return System.currentTimeMillis() - 48 * 60 * 60 * 1000L
-    val cal = Calendar.getInstance()
-    if(date.split(".", limit = 3).any { it.toIntOrNull()==null }) return System.currentTimeMillis()
-    return when (date.split(".").size) {
-        1 -> cal.apply {
-            set(Calendar.DAY_OF_MONTH, date.toIntOrNull() ?: 1)
-        }.timeInMillis
-
-        2 -> cal.apply {
-            set(Calendar.MONTH, (date.split(".")[1].toIntOrNull() ?: 0) - 1);
-            set(Calendar.DAY_OF_MONTH, date.split(".")[0].toIntOrNull() ?: 1)
-        }.timeInMillis
-
-        3 -> cal.apply {
-            set(Calendar.YEAR, date.split(".")[2].toIntOrNull() ?: 2024)
-            set(Calendar.MONTH, (date.split(".")[1].toIntOrNull() ?: 0) - 1);
-            set(Calendar.DAY_OF_MONTH, date.split(".")[0].toIntOrNull() ?: 1);
-        }.timeInMillis
-        else -> System.currentTimeMillis()
-    }
 }
 class Subscription<T>{
     var listener: (T)->Unit = {}
