@@ -171,11 +171,11 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     val totalSum = people.sumOf { it.elements.total() }
-                                    Text(totalSum.centAsEuro(), style = MaterialTheme.typography.displayMedium.copy(totalSum.getColor(negTotal, posTotal), fontWeight = FontWeight.Bold))
+                                    Text(totalSum.centAsEuro(), style = MaterialTheme.typography.displaySmall.copy(totalSum.getColor(negTotal, posTotal), fontWeight = FontWeight.Bold))
                                     Row {
-                                        Text(posTotal.centAsEuro(), style = MaterialTheme.typography.titleMedium.copy(color = Color(0xFF99FF99)), modifier = Modifier.weight(1f), textAlign = TextAlign.End)
-                                        Text("·", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W900), modifier = Modifier.width(30.dp), textAlign = TextAlign.Center)
-                                        Text(negTotal.centAsEuro(), style = MaterialTheme.typography.titleMedium.copy(color = Color(0xFFFF9999)), modifier = Modifier.weight(1f))
+                                        Text(posTotal.centAsEuro(), style = MaterialTheme.typography.titleSmall.copy(color = Color(0xFF99FF99)), modifier = Modifier.weight(1f), textAlign = TextAlign.End)
+                                        Text("·", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.W900), modifier = Modifier.width(30.dp), textAlign = TextAlign.Center)
+                                        Text(negTotal.centAsEuro(), style = MaterialTheme.typography.titleSmall.copy(color = Color(0xFFFF9999)), modifier = Modifier.weight(1f))
                                     }
                                 }
                             }
@@ -205,7 +205,7 @@ class MainActivity : ComponentActivity() {
                 }
                 AnimatedVisibility(selectedPersonVisible,
                     enter = fadeIn() + scaleIn(spring(stiffness = 5000f), initialScale = .5f),
-                    exit = fadeOut() + scaleOut(spring(stiffness = 300f), targetScale = .75f)
+                    exit = fadeOut() + scaleOut(spring(stiffness = 100f), targetScale = .75f)
                 ) {
                     var person by remember(selectedPerson) {  mutableStateOf(selectedPerson) }
                     val elements = remember(selectedPerson) {person.elements.toMutableStateList()}
@@ -249,11 +249,11 @@ class MainActivity : ComponentActivity() {
                                     ) {
                                         EditableText(
                                             selectedPerson.name,
-                                            style = MaterialTheme.typography.headlineMedium.copy(MaterialTheme.colorScheme.primary),
+                                            style = MaterialTheme.typography.headlineSmall.copy(MaterialTheme.colorScheme.primary),
                                             onDone = { person=person.copy(name = it) },
                                             placeholder = "Name"
                                         )
-                                        Text(total.centAsEuro(), style = MaterialTheme.typography.titleLarge.copy(color = total.getBoolColor()))
+                                        Text(total.centAsEuro(), style = MaterialTheme.typography.titleMedium.copy(color = total.getBoolColor()))
                                     }
                                     Spacer(Modifier)
                                     Row(
@@ -298,7 +298,7 @@ class MainActivity : ComponentActivity() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(ImageVector.vectorResource(R.drawable.label_24px), "Name", Modifier.width(70.dp))
-                                EditableText(element.name, MaterialTheme.typography.headlineMedium.copy(MaterialTheme.colorScheme.primary), placeholder = "Name") {
+                                EditableText(element.name, MaterialTheme.typography.titleLarge.copy(MaterialTheme.colorScheme.primary), placeholder = "Name") {
                                     element=element.copy(name = it)
                                 }
                             }
@@ -307,7 +307,7 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Icon(ImageVector.vectorResource(R.drawable.calendar_month_24px), "Date", Modifier.width(70.dp))
                                 Column {
-                                    Text(element.date.dateToString(), style = MaterialTheme.typography.titleMedium)
+                                    Text(element.date.dateToString(), style = MaterialTheme.typography.titleSmall)
                                     Row(
                                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                                     ) {
@@ -334,7 +334,7 @@ class MainActivity : ComponentActivity() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(ImageVector.vectorResource(R.drawable.ic_launcher_foreground), "Money", Modifier.width(70.dp))
-                                MoneyInput(element.priceInCent.toString(), MaterialTheme.typography.headlineSmall) { element=element.copy(priceInCent = it) }
+                                MoneyInput(element.priceInCent.toString(), MaterialTheme.typography.titleMedium) { element=element.copy(priceInCent = it) }
                             }
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
@@ -390,7 +390,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PersonColumn(title: String, background: Color, list: List<Person>, open: (Person)->Unit){
     Column(Modifier.fillMaxWidth()) {
-        Text(title, style = MaterialTheme.typography.titleMedium.copy(MaterialTheme.colorScheme.secondary))
+        Text(title, style = MaterialTheme.typography.titleSmall.copy(MaterialTheme.colorScheme.secondary))
         Spacer(Modifier.height(10.dp))
         val nonUrgent = list.filter { !it.isUrgent() }.sortedBy { it.name }
         val urgent = list.filter { it.isUrgent() }.sortedBy { it.name }
@@ -415,8 +415,8 @@ private fun PersonComposable(it: Person, open: ()->Unit) {
         .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(it.name, style = MaterialTheme.typography.headlineSmall)
-            Text(total.centAsEuro(), style = MaterialTheme.typography.titleMedium.copy(total.getBoolColor()))
+            Text(it.name, style = MaterialTheme.typography.titleLarge)
+            Text(total.centAsEuro(), style = MaterialTheme.typography.titleSmall.copy(total.getBoolColor()))
         }
         if(it.isUrgent())
             Row(
@@ -429,7 +429,7 @@ private fun PersonComposable(it: Person, open: ()->Unit) {
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 Icon(ImageVector.vectorResource(R.drawable.warning), "Warning", Modifier.size(15.dp))
-                Text("${if(total>0) "In debt" else "Unpaid"} since ${it.lastSignFlip().dateToString()} (${it.lastSignFlip().formatedTimeAgo()} ago)", style = MaterialTheme.typography.titleSmall)
+                Text("${if(total>0) "In debt" else "Unpaid"} since ${it.lastSignFlip().dateToString()} (${it.lastSignFlip().formatedTimeAgo()} ago)", style = MaterialTheme.typography.bodyMedium)
             }
     }
 }
@@ -465,7 +465,7 @@ fun ElementComposable(elem: Element, setElementDeletion: (Boolean)->Unit, awaitD
         Modifier
             .clip(RoundedCornerShape(20.dp))
             .clickable { isChecked=!isChecked ; setElementDeletion(isChecked) }
-            .background(if(!isChecked) MaterialTheme.colorScheme.surfaceContainer else elem.priceInCent.getBoolColor().copy(.1f), RoundedCornerShape(20.dp))
+            .background(if(!isChecked) MaterialTheme.colorScheme.surfaceContainer else elem.priceInCent.getBoolColor().copy(.1f), RoundedCornerShape(30.dp))
             .padding(15.dp)
 
         ,
@@ -483,7 +483,7 @@ fun ElementComposable(elem: Element, setElementDeletion: (Boolean)->Unit, awaitD
             )
             Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                 Text(elem.date.dateToString(), Modifier.clickable { awaitDayPicker(dayPickerSubscription, elem.date) }, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.secondary))
-                Text("·", style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.secondary))
+                Text("·", style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.secondary))
                 MoneyInput(elem.priceInCent.toString(), style = MaterialTheme.typography.titleMedium) { updateElement(elem.copy(priceInCent = it))}
             }
         }
@@ -540,7 +540,7 @@ fun Calendar.zero(): Long{
     return timeInMillis
 }
 @Composable
-fun MoneyInput(initialText: String, style: TextStyle = MaterialTheme.typography.titleSmall, updateElement: (Int) -> Unit){
+fun MoneyInput(initialText: String, style: TextStyle = MaterialTheme.typography.titleMedium, updateElement: (Int) -> Unit){
     var isNegative by remember { mutableStateOf(initialText.getOrNull(0)=='-') }
     var content by remember { mutableStateOf(initialText.filter { it!='-' }) }
     val focusManager = LocalFocusManager.current
