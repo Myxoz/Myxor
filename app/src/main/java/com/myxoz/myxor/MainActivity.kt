@@ -185,7 +185,7 @@ class MainActivity : ComponentActivity() {
                                 val owing = people.filter { it.elements.total()>0 }
                                 val onClick = {it: Person -> selectedPersonVisible=true; selectedPerson=it; backPressed={selectedPersonVisible=false; backPressed={finishAndRemoveTask()}}}
                                 if(repay.isNotEmpty()) {
-                                    PersonColumn("Yet to pay", Color.Red, repay, onClick)
+                                    PersonColumn("Yet to repay", Color.Red, repay, onClick)
                                 }
                                 if(owing.isNotEmpty()) {
                                     PersonColumn("In debt", Color.Green, owing, onClick)
