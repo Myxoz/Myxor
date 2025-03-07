@@ -533,7 +533,7 @@ fun Int.centAsEuro(): String="${this/100}.${if(abs(this) % 100>9) "" else "0"}${
 
 fun <T> MutableList<T>.substituteFirst(condition: (T)->Boolean, replacement: T) {
     val index = indexOfFirst { condition(it) }
-    if(index!=1) set(index, replacement)
+    if(index!=-1) set(index, replacement)
 }
 fun Calendar.zero(): Long{
     set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0)
