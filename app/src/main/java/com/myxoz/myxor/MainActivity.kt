@@ -86,6 +86,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.myxoz.myxor.ui.theme.MyxorMaterialTheme
 import kotlinx.coroutines.launch
+import rememberColorScheme
 import java.util.Calendar
 import java.util.UUID
 import kotlin.math.abs
@@ -106,6 +107,7 @@ class MainActivity : ComponentActivity() {
         prefs = getSharedPreferences(localClassName, MODE_PRIVATE)
         enableEdgeToEdge()
         setContent {
+            val colorScheme = rememberColorScheme(applicationContext)
             val people = remember {
                 Person.parseJSONasPersonList(
                 prefs.getString("data", "[]") ?: "[]"
@@ -144,7 +146,7 @@ class MainActivity : ComponentActivity() {
             var addingElementUUID by remember { mutableStateOf(UUID.randomUUID()) }
             var isSheetVisible by remember { mutableStateOf(false) }
             onBackPressedDispatcher.addCallback(onBackPressedCallback)
-            MyxorMaterialTheme {
+            MyxorMaterialTheme(colorScheme) {
                 var datePickerSubscription: Subscription<Long>? by remember { mutableStateOf(null) }
                 val datePickerState = rememberDatePickerState()
                 if(datePickerSubscription!=null) {
